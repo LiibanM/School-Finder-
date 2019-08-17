@@ -1,0 +1,154 @@
+@import url('https://fonts.googleapis.com/css?family=Staatliches');
+
+body, html {
+  height: 100%;
+}
+
+
+
+.parallax {
+  /* The image used */
+
+  /* Set a specific height */
+  height: 100% ;
+
+  /* Create the parallax scrolling effect  */
+   background-attachment: fixed !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  background-size: cover !important;
+
+ }
+.bg1{
+  background-image: url("../images/classroom.jpg");
+}
+
+.site-title{
+  margin-top: 20%;
+  margin-bottom: 6%;
+  font-size: 50px;
+  color: white;
+  font-family: 'Staatliches';
+  font-weight:900;
+  text-shadow: 0px 0px 10px #000;
+  text-align: center;
+}
+
+.site-desc{
+  font-size: 20px;
+  padding-left: 15%;
+  margin-top: 20%;
+  color: white;
+  font-family: 'Staatliches';
+  font-weight:900;
+  text-shadow: 0px 0px 10px #000;
+}
+
+
+
+
+/* seciton 1 */
+.card-img-top{
+
+  height: 250px !important;
+}
+.section-1 .heading-1{
+  margin-top: 8%;
+}
+
+.section-1 .heading-2{
+
+  margin-bottom: 5%;
+  font-size: 40px;
+}
+
+.section-1 .para-1{
+
+  width: 60%;
+  margin-left: 20%;
+  margin-bottom: 5%;
+}
+
+
+.section-1 .card-text, .para-1{
+
+  color: #535353
+}
+
+
+.section-1{
+
+  margin-bottom: 8%
+}
+
+.card{
+  width: 20rem;
+}
+
+
+/* seciton 2 */
+ .bg2{
+  background-image: url("../images/section2.jpg");
+
+}
+
+
+.section-2{
+
+  height: 500px;
+}
+
+.section-2 .heading-1{
+
+  margin-top: 5%;
+  margin-bottom: 4%;
+  width: 80%;
+  color: black;
+
+
+}
+
+.section-2 .para{
+  color: black;
+  margin-bottom: 5%;
+  text-align: center;
+
+}
+
+.section-2 .btn{
+
+  margin-bottom: 15%;
+  width: 15%;
+  padding: 1% 3.5%
+}
+
+/* section 3 */
+
+.section-3{
+  margin-top: 6%;
+}
+.section-3 i{
+  color: #9aff18;
+}
+
+.section-3 p{
+  color: #535353;
+
+}
+
+@media screen and (max-width: 768px){
+
+  .section-1 .card{
+    width: 14rem;
+  }
+
+}
+
+/* this is the contact section */
+
+#contactTitle{
+  text-align: center;
+  position: relative;
+  left: 400px;
+  bottom: 150px;
+}

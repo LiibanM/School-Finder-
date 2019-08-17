@@ -1,0 +1,61 @@
+{% extends "school/base.html"%}
+
+{% load widget_tweaks %}
+{% load staticfiles %}
+{% block body_block %}
+
+<link rel="stylesheet" href="{% static "css/login.css" %}"/>
+
+
+<h1 class="headings">Please Login </h1>
+
+<div class="container">
+  <div class="row justify-content-center align-items-center" style="height:50vh">
+    <div class="card cardings1">
+
+      <img src="{% static "images/schoolpic.jpg"%}" alt="" class="cardings1 ">
+  </div>
+  </div>
+
+
+
+  <div class="row justify-content-center align-items-center" style="height:50vh">
+    <div class="card cardings">
+      <img src="{% static "images/friendship.png"%}" alt="" class="cardings-img1 ">
+
+      <form action="" method="post" class="" id="loginform">
+
+        {% csrf_token %}
+
+        <div class="input-group p-2">
+          <span class="input-group-addon"><i class=""></i></span>
+            {% render_field form.username class="form-control regularFont " placeholder="Enter username" style="position: relative; top: 20px;" %}
+        </div>
+
+        <div class="input-group p-2">
+          <span class="input-group-addon"><i class=""></i></span>
+            {% render_field form.password class="form-control regularFont " placeholder="Enter password" style="position: relative; top: 50px;" %}
+        </div>
+
+
+
+          <div class="centers">
+
+              <button type="submit" class="m-4 btn btn-lg  btn btn-success" id="loginbtn"><span class="glyphicon glyphicon-log-in"></span> Login</button>
+              <h5 id="member"class=" ">Not a member?</h5>
+              <a href="{% url 'signup' %}" style="position: relative; left: 20px;">Sign up now</a>
+              <div class="messagessent">
+                {% if messages %}
+                      {% for message in messages %}
+                          <p>{{ message }}</p>
+                      {% endfor %}
+                  {% endif %}
+              </div>
+
+          </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

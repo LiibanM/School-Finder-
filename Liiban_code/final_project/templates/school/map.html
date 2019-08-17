@@ -1,0 +1,823 @@
+{% extends "school/base.html"%}
+
+{% load staticfiles %}
+
+{% block body_block %}
+
+
+<!-- <script type="text/javascript" src="{% static 'javascript/mapjs.js' %}?version=5"></script> -->
+
+
+
+
+<!-- <link rel="stylesheet" type="text/css" href="{% static 'css/mapcss.css' %}"> -->
+
+<!-- <script type="text/javascript" src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script> -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css">
+<link rel="stylesheet" href="animate.min.css">
+
+<style >
+
+/* text-align: center; border: 1px solid #090; background: #efe; padding: 20px;  */
+
+#resetButton{
+position: relative;
+    left: 580px;
+    bottom: 115px;
+    width: fit-content;
+    height: 100px;
+
+}
+.schoollink{
+  position:relative;
+  left: 25%;
+}
+.schoolTelephone{
+  text-align: center;
+  display: -webkit-box;
+  color:white;
+  position:relative;
+  left:20%;
+  margin-top: 5%;
+}
+.list-button{
+  width: -webkit-fill-available;
+  margin-top: 18%;
+}
+ .schoolGender{
+      margin-bottom: 0;
+       position: relative;
+       bottom: 20px;
+       width:50px;
+}
+#closebutton{
+    position: relative;
+    left: 90%;
+    height: 30px;
+    width: 30px;
+    top:3px;
+    padding: inherit;
+}
+.filter3{
+  position: relative;
+  left: 410px;
+  bottom: 77px;
+  margin-top:1px;
+
+}
+.filter2{
+  position: relative;
+  left: 200px;
+  bottom: 38px;
+
+}
+#addbutton{
+  position: relative;
+  top: 20px;
+  left: 50px;
+}
+
+#map {
+  height: 100%;
+}
+
+/* Optional: Makes the sample page fill the window. */
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  position: relative;
+
+  /* this postion is altered */
+
+}
+#filter1{
+  width: 15%;
+  top: 5px;
+  bottom: 5px;
+  left: 5px;
+}
+
+/* #overlay{
+      background: #2E4D5B;
+      border-radius: 4px;
+      box-shadow: 0px 1px 3px 0px #A1B1B7;
+      font-weight: 300;
+      opacity: 0;
+      overflow: visible;
+      overflow-y: scroll;
+      position: absolute;
+      top: 6.6em;
+      left: 1.2em;
+      bottom: 1.2em;
+      max-width: 360px;
+      min-width: 350px;
+      transition: opacity 0.25s;
+      width: 33%;
+      z-index: 2;
+
+} */
+
+
+/* #overlay{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  background-color: rgba(0,0,0,0.5); */
+
+  #overlay{
+    /*background: #2E4D5B;*/
+    position: absolute;
+    top: 6.6em;
+    left: 1.2em;
+    bottom: 1.2em;
+    z-index: 2;
+    width: 33%;
+
+    max-width: 360px;
+    min-width: 350px;
+    height: 700px;
+
+  }
+
+  #filtering{
+    /*background: #2E4D5B;*/
+    position: absolute;
+    top: 8em;
+    left: 25em;
+    bottom: 1.2em;
+    z-index: 2;
+    width: 80%;
+    max-width: 1000px;
+    min-width: 1000px;
+    height: 40px;
+
+  }
+
+
+  .popup{
+  }
+
+
+
+/*
+
+#establishment{
+  font-size: 20px;
+}*/
+</style>
+
+<body>
+
+<div id="map">
+
+</div>
+
+
+<div id="filtering" class="card rounded animated fadeInDown delay-3s">
+
+  <div class="dropdown">
+  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Filter Ofsted schools
+  </button>
+  <div class="dropdown-menu " aria-labelledby="dropdownMenuButton">
+    <a id= "Outstanding"  class="dropdown-item school1" href="#">Outstanding schools only</a>
+    <a id= "Good" class="dropdown-item school1" href="#">Good Schools and above</a>
+    <a id= "Requires improvement"  class="dropdown-item school1" href="#">Requires improvement and above</a>
+  </div>
+</div>
+
+<div class="dropdown ">
+<button class="btn btn-secondary dropdown-toggle filter2 " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+  Filter By School Types
+</button>
+<div class="dropdown-menu " aria-labelledby="dropdownMenuButton">
+  <a id= "Community"  class="dropdown-item schooltypes" href="#">Community Schools</a>
+  <a id= "Voluntary" class="dropdown-item schooltypes" href="#">Voluntary Aided school</a>
+  <a id= "Foundation"  class="dropdown-item schooltypes" href="#">Foundation school</a>
+  <a id= "Academy"  class="dropdown-item schooltypes" href="#">Academy school</a>
+</div>
+</div>
+
+<div class="dropdown ">
+<button class="btn btn-secondary dropdown-toggle filter3 " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+  Filter By Gender
+</button>
+<div class="dropdown-menu " aria-labelledby="dropdownMenuButton">
+  <a id= "Mixed"  class="dropdown-item gendertypes" href="#">Mixed</a>
+  <a id= "Boys" class="dropdown-item gendertypes" href="#">Boys only </a>
+  <a id= "Girls"  class="dropdown-item gendertypes" href="#">Girls only</a>
+</div>
+</div>
+
+<button id="resetButton" class="btn btn-warning " type="button" name="btn btn-warning"> Reset Filters</button>
+
+</div>
+
+
+<div id="overlay" class="card rounded">
+  <button id="closebutton" class="close "type="button" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+  <p class="schoolGender"></p>
+
+  <h2 class="card-header text-center font-weight-bold" id="establishment"></h2>
+  <!--p class="popup card-header" id="establishment" style="font-size: 20px;"></p-->
+  <div class="row m-0 p-0 mt-2">
+    <div class="col text-center">
+        <h6 class="card-title font-weight-bold"><span class="badge badge-info" id="TypeOfEstablishment" style="font-size: 100%;"></span></h6>
+    </div>
+    </div>
+    <div class="row m-0 p-0 pt-2">
+    <div class="col text-center">
+        <h6 class="card-title font-weight-bold"><span class="badge badge-info" id="PhaseOfEducation" style="font-size: 100%;"></span></h6>
+    </div>
+  </div>
+
+
+  <div class="mt-4" id="accordion">
+      <div class="card">
+          <div class="card-header p-0 pl-3 py-1" id="headingOne">
+              <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" style="text-decoration: none;"><h5 class="m-0"><i class="fas fa-university"></i>  Post-Secondary</h5></button>
+          </div>
+          <div class="collapse" id="collapseOne" data-parent="#accordion" aria-labelledby="headingOne">
+              <div class="card-body">
+                  <p class="popup" id="OfficialSixthForm"></p>
+                  <hr>
+                  <p class="sixthformDescription"></p>
+              </div>
+          </div>
+      </div>
+
+      <div class="card">
+          <div class="card-header p-0 pl-3 py-1" id="headingTwo">
+              <button class="btn btn-link" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" style="text-decoration: none;"><h5 class="m-0"><i class="fas fa-user"></i>  Gender Distribution</h5></button>
+          </div>
+          <div class="collapse" id="collapseTwo" data-parent="#accordion" aria-labelledby="headingTwo">
+              <div class="card-body">
+                <p class="card-text"><small><i class="fas fa-male"></i> Boys: </small><span id="NumberOfBoys"></span></p>
+                <p class="card-text"><small><i class="fas fa-female"></i> Girls: </small><span id="NumberOfGirls"></span></p>
+              </div>
+          </div>
+      </div>
+
+      <div class="card">
+          <div class="card-header p-0 pl-3 py-1" id="headingThree">
+              <button class="btn btn-link" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree" style="text-decoration: none;"><h5 class="m-0"><i class="fas fa-user-graduate"></i>  Teacher</h5></button>
+          </div>
+          <div class="collapse" id="collapseThree" data-parent="#accordion" aria-labelledby="headingThree">
+              <div class="card-body">
+                <p class="card-text"> <span id="HeadTitle"></span> <span id="HeadFirstName"></span> <span id="HeadLastName"></span> </p>
+              </div>
+          </div>
+      </div>
+
+      <div class="card">
+          <div class="card-header p-0 pl-3 py-1" id="headingFour">
+              <button class="btn btn-link" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour" style="text-decoration: none;"><h5 class="m-0"><i class="fas fa-star"></i>  Offsted</h5></button>
+          </div>
+          <div class="collapse" id="collapseFour" data-parent="#accordion" aria-labelledby="headingFour">
+              <div class="card-body">
+                  <span class="badges" id="OfstedRating"></span>
+                <hr>
+                <p class="ofstedDescription"></p>
+              </div>
+          </div>
+      </div>
+
+      <div class="card">
+          <div class="card-header p-0 pl-3 py-1" id="headingFive">
+              <button class="btn btn-link" data-toggle="collapse" data-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive" style="text-decoration: none;"><h5 class="m-0"><i class="far fa-newspaper"></i>  Admissions Policy</h5></button>
+          </div>
+          <div class="collapse" id="collapseFive" data-parent="#accordion" aria-labelledby="headingFive">
+              <div class="card-body">
+                <p class="popup">  <span class="badge" id="AdmissionsPolicy"></span>  </p>
+                <hr>
+                <p class="admissionsDescription"></p>
+              </div>
+          </div>
+      </div>
+
+      <div class="card">
+          <div class="card-header p-0 pl-3 py-1" id="headingSix">
+              <button class="btn btn-link" data-toggle="collapse" data-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix" style="text-decoration: none;"><h5 class="m-0"><i class="fas fa-map-pin"></i> Location </h5></button>
+          </div>
+          <div class="collapse" id="collapseSix" data-parent="#accordion" aria-labelledby="headingSix">
+              <div class="card-body">
+                <p class="popup">  <span class="badge" id="Street"></span>  </p>
+                <p class="popup">  <span class="badge" id="Locality"></span>  </p>
+                <p class="popup">  <span class="badge" id="Town"></span>  </p>
+                <p class="popup">  <span class="badge" id="County"></span>  </p>
+                <p class="popup">  <span class="badge" id="Postcode"></span>  </p>
+              </div>
+          </div>
+      </div>
+
+
+
+
+  </div>
+
+  <!--Different color-->
+  <div class="" style="height:100%; background-color:#2F4F4F;">
+  <span class="schoolTelephone">Call now at: <p  id="TelephoneNum" style="  display: -webkit-inline-box;"></p></span>
+
+    <p id="SchoolWebsite"></p>
+
+
+    <!-- {% if x in current_user.list_id.all %}
+    <button  class="list-button" style="width: 90px; color: green;">Added to my list</button>
+    {% else %}
+    <button  class="list-button">+ Add to my list</button>
+    {% endif %} -->
+
+
+    <button id= "hiddenid"  class="list-button btn btn-success"> Add to my list</button>
+
+
+  </div>
+<!--
+  <p class="popup" id="TypeOfEstablishment"></p>
+  <p class="popup" id="PhaseOfEducation"></p>
+  <p class="popup" id="OfficialSixthForm"></p>
+  <p class="popup" id="Gender"></p>
+  <p class="popup" id="AdmissionsPolicy"></p>
+  <p class="popup" id="NumberOfBoys"></p>
+  <p class="popup" id="NumberOfGirls"></p>
+  <p class="popup" id="HeadTitle"></p>
+  <p class="popup" id="HeadFirstName"></p>
+  <p class="popup" id="HeadLastName"></p>
+  <p class="popup" id="OfstedRating"></p>-->
+
+
+
+</div>
+
+
+<script>
+
+
+
+  $("#overlay").hide();
+
+  var geocoder;
+  var map;
+  var address;
+  var markers = [];
+  var allMarkers = [];
+  var ofstedgrade;
+  var schooltype;
+  var gendertype;
+
+
+  // this intitialises the map
+  var infoWindow;
+  function initMap() {
+   map = new google.maps.Map(document.getElementById('map'), {
+     center: {lat: -0.04497528076171874, lng: 51.52295012515947},
+     zoom: 6,
+     gestureHandling: 'greedy'
+   });
+
+
+   infoWindow = new google.maps.InfoWindow;
+
+//checking if the users browser supports geolocation
+   if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function(position) {
+        //these are the coordinates returned from geolocation of users web browser used to center the map
+        var pos = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        };
+
+        infoWindow.setPosition(pos);
+
+        //setting the map onto the users location
+        var marker = new google.maps.Marker({
+          map: map,
+          position: pos,
+          icon: "{% static "images/house.png"%}"
+      })
+
+        infoWindow.setContent('Location found.');
+        infoWindow.open(map);
+        map.setCenter(pos);
+        map.setZoom(14);
+
+        //this is the radius that represents the catchment area indicator
+        var circle = new google.maps.Circle({
+          map: map,
+          radius: 4828.03,    //3 miles
+          fillColor: '#AA0000'
+        });
+
+        circle.bindTo('center', marker, 'position');
+        //after successful geolocation it calls the mapping function
+        codeAddress(map)
+
+
+      }, function() {
+
+        handleLocationError(true, infoWindow, map.getCenter());
+      });
+    } else {
+
+      // Browser doesn't support Geolocation
+
+      handleLocationError(false, infoWindow, map.getCenter());
+    }
+    //error handling whenever the user doesn't accept prompt or disabled geolocation
+  function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+    infoWindow.setPosition(pos);
+    infoWindow.setContent(browserHasGeolocation ?
+
+    'Error: Please Accept Location access popup' :
+
+    'Error: Your browser doesn\'t support geolocation.');
+
+    infoWindow.open(map);
+  }
+
+  }
+  function codeAddress(map) {
+
+    // looping through all the schools in my database
+    {% for data in mapdata1 %}
+
+      var markerLat = parseFloat('{{data.Latitude}}');
+      var markerLong = parseFloat('{{data.Longitude}}');
+      var markerPosition = {lat: markerLat, lng: markerLong}
+
+        //this is checking for the type of school that results in a specific icon for Ofsted grade
+        if ('{{data.OfstedRating}}'=='Outstanding'){
+          var marker = new google.maps.Marker({
+            map: map,
+            position: markerPosition,
+            icon:"{% static "images/green.png"%}",
+            TypeOfEstablishment: "{{data.TypeOfEstablishment}}",
+            Gender: "{{data.Gender}}",
+            OfstedRating: "{{data.OfstedRating}}"
+        })
+      }
+
+        else if ('{{data.OfstedRating}}'=='Good'){
+          var marker = new google.maps.Marker({
+            map: map,
+            position: markerPosition,
+            icon:"{% static "images/blue.png"%}",
+            TypeOfEstablishment: "{{data.TypeOfEstablishment}}",
+            Gender: "{{data.Gender}}",
+            OfstedRating: "{{data.OfstedRating}}"
+
+
+        })
+        }
+
+        else if ('{{data.OfstedRating}}'=='Requires improvement'){
+          var marker = new google.maps.Marker({
+            map: map,
+            position: markerPosition,
+            icon: "{% static "images/yellow.png"%}",
+            TypeOfEstablishment: "{{data.TypeOfEstablishment}}",
+            Gender: "{{data.Gender}}",
+            OfstedRating: "{{data.OfstedRating}}"
+
+        })
+        }
+
+        else if ('{{data.OfstedRating}}'=='Serious Weaknesses'){
+
+
+          var marker = new google.maps.Marker({
+            map: map,
+            position: markerPosition,
+            icon:"{% static "images/red.png"%}",
+            TypeOfEstablishment: "{{data.TypeOfEstablishment}}",
+            Gender: "{{data.Gender}}",
+            OfstedRating: "{{data.OfstedRating}}"
+
+
+
+        })
+
+        }
+
+        else{
+          var marker = new google.maps.Marker({
+            map: map,
+            position: markerPosition,
+            icon:"{% static "images/placeholder.png"%}",
+            TypeOfEstablishment: "{{data.TypeOfEstablishment}}",
+            Gender: "{{data.Gender}}",
+            OfstedRating: "{{data.OfstedRating}}"
+
+        })
+        }
+
+        //this is the event listener for the marker and populates the side-panel with the school data
+        google.maps.event.addListener(marker, "click", function(e) {
+
+       var schoolname = "{{data.EstablishmentName}}"
+       var schoolname = schoolname.replace(/&#39;/g, "'");
+       $("#establishment").text(schoolname);
+       $("#TypeOfEstablishment").text("{{data.TypeOfEstablishment}}");
+       $("#PhaseOfEducation").text("{{data.PhaseOfEducation}}");
+       $("#OfficialSixthForm").text("{{data.OfficialSixthForm}}");
+       $("#Gender").text("{{data.Gender}}");
+       $("#AdmissionsPolicy").text("{{data.AdmissionsPolicy}}");
+       $("#NumberOfBoys").text("{{data.NumberOfBoys}}");
+       $("#NumberOfGirls").text("{{data.NumberOfGirls}}");
+       $("#HeadTitle").text("{{data.HeadTitle}}");
+       $("#HeadFirstName").text("{{data.HeadFirstName}}");
+       $("#HeadLastName").text("{{data.HeadLastName}}");
+       $("#OfstedRating").text("{{data.OfstedRating}}");
+
+        //some schools dont have http or https in database so checking this and adding it if it doesnt have it
+        if("{{data.SchoolWebsite}}" != ' ' && !"{{data.SchoolWebsite}}".includes('http://')){
+          $("#SchoolWebsite").replaceWith('<p id="SchoolWebsite"> <a href="http://{{data.SchoolWebsite}}" style=padding:25%;> Visit Schools website </a> </p>');
+        }
+        else{
+        $("#SchoolWebsite").replaceWith('<p id="SchoolWebsite"> <a href="{{data.SchoolWebsite}}" style=padding:25%;> Visit Schools website </a> </p>');
+        }
+
+
+
+       $("#AdmissionsPolicy").text("{{data.AdmissionsPolicy}}");
+       $("#Street").text("{{data.Street}}");
+       $("#Locality").text("{{data.Locality}}");
+       $("#Town").text("{{data.Town}}");
+       $("#County").text("{{data.County}}");
+       $("#Postcode").text("{{data.Postcode}}");
+       $("#TelephoneNum").text("{{data.TelephoneNum}}");
+
+       $(".schoolGender").text("{{data.Gender}}");
+
+       $("#hiddenid").val("{{data.URN}}");
+
+       //checking if the user has already added the school in their list
+       {% if data in schoolsadded.all %}
+
+            $('#hiddenid').text('Added to List')
+
+      {% else %}
+      //user hasnt added this school so the button will say add to list
+             $('#hiddenid').text('Add to List')
+      {% endif %}
+
+       $("#overlay").show("slow");
+
+       // this is the extra information on the side panel, e.g. if its a selective school i explained
+       // the details of the school types and Ofsted grades meanings.
+       if("{{data.AdmissionsPolicy}}" == "Non-selective"){
+            $(".admissionsDescription").text("This schools accepts all students, and so admission is not based on any academic qualifications");
+       }
+      else if("{{data.AdmissionsPolicy}}" == "Selective"){
+            $(".admissionsDescription").text("This School basis selection on the academic acheivement of students, this may involve some entry exams or Year 6 SATs exam results");
+       }
+
+       if("{{data.OfficialSixthForm}}" == "Has a sixth form"){
+            $(".sixthformDescription").text("This School provides students with post secondary education which involves A Levels and BTEC's, Such qualifications are used to apply for University");
+       }
+      else if("{{data.OfficialSixthForm}}" == "Not applicable" || "Does not have a sixth form"){
+            $(".sixthformDescription").text("This School does not provide students with post secondary education");
+       }
+
+
+     if("{{data.OfstedRating}}" == "Outstanding"){
+          $("#OfstedRating").replaceWith("<span class='badge badge-success' id='OfstedRating'>{{data.OfstedRating}}</span>");
+          $(".ofstedDescription").text("This is an outstanding school,Providers judged outstanding at their most recent inspection are not normally inspected again. Ofsted will inspect an outstanding provider if its performance declines or for other reasons, such as potential safeguarding issues.");
+     }
+
+     else if ("{{data.OfstedRating}}" == "Good"){
+         $("#OfstedRating").replaceWith("<span class='badge badge-primary' id='OfstedRating'>{{data.OfstedRating}}</span>");
+         $(".ofstedDescription").text("This is an Good school, the second highests grade awarded by Ofsted, A provider judged good at their most recent inspection will have a short inspection. If their performance remains good they will have a short inspection roughly every 3 years");
+     }
+
+     else if ("{{data.OfstedRating}}" == "Requires improvement"){
+         $("#OfstedRating").replaceWith("<span class='badge badge-warning' id='OfstedRating'>{{data.OfstedRating}}</span>");
+         $(".ofstedDescription").text("A school judged as requires improvement at its last inspection is a school that is not yet good but overall provides an acceptable standard of education. The school is inspected again within a period of 30 months. ");
+     }
+
+     else if ("{{data.OfstedRating}}" == "Serious Weaknesses"){
+         $("#OfstedRating").replaceWith("<span class='badge badge-danger' id='OfstedRating'>{{data.OfstedRating}}</span>");
+         $(".ofstedDescription").text("This means that one or more of the key areas of the school’s performance require significant improvement, but leaders and managers have demonstrated the capacity to improve.");
+     }
+       else if ("{{data.OfstedRating}}" == "Special Measures"){
+         $("#OfstedRating").replaceWith("<span class='badge badge-secondary' id='OfstedRating'>{{data.OfstedRating}}</span>");
+         $(".ofstedDescription").text("This means the school is failing to provide its pupils with an acceptable standard of education, and is not showing the capacity to make the improvements needed.");
+     }
+     else{
+       $("#OfstedRating").replaceWith("<span class='badge badge-secondary' id='OfstedRating'>Unexamined</span>");
+       $(".ofstedDescription").text("This school has yet to be examined, this could be possibly due to it being a a new school.");
+
+     }
+
+     });
+     markers.push(marker);
+     allMarkers.push(marker);
+
+    {% endfor %}
+
+
+
+
+     var resetfilter = document.getElementById("resetButton");
+
+
+//first filter
+  $(".school1").click(function(){
+
+      ofstedgrade = $(this).attr('id');
+
+      for (var i = 0; i < markers.length; i++) {
+        //checking if the other two filters are empty then just set everything else false
+        //if it isnt then just make everything else not visible.
+        if(schooltype==null && gendertype==null){
+          if(markers[i].OfstedRating!==ofstedgrade){
+              markers[i].setVisible(false);
+
+            }else{
+              markers[i].setVisible(true);
+            }
+
+          }
+        else{
+          //if there is another state, then call filtering to see what other filter have been applied
+          filteringMap(markers[i])
+
+        }
+      }
+
+  });
+
+//second filter
+  $(".schooltypes").click(function(){
+
+      schooltype = $(this).attr('id')
+
+      for (var i = 0; i < markers.length; i++) {
+        //checking if the other two filters are empty then just set everything else false
+        //if it isnt then just make everything else not visible.
+        if(ofstedgrade==null && gendertype==null){
+          if(!markers[i].TypeOfEstablishment.includes(schooltype)){
+              markers[i].setVisible(false);
+
+            }else{
+              markers[i].setVisible(true);
+            }
+
+          }
+        else{
+          //if there is another state, then call filtering to see what other filter have been applied
+          filteringMap(markers[i])
+
+        }
+    }
+
+  });
+
+//third filter
+  $(".gendertypes").click(function(){
+    gendertype = $(this).attr('id')
+    for (var i = 0; i < markers.length; i++) {
+      //if there is another state, then call filtering to see what other filter have been applied
+      //if it isnt then just make everything else not visible.
+      if(ofstedgrade==null && schooltype==null){
+        if(markers[i].Gender !== gendertype){
+            markers[i].setVisible(false);
+          }else{
+            markers[i].setVisible(true);
+          }
+
+        }else{
+          //if there is another state, then call filtering to see what other filter have been applied
+          filteringMap(markers[i])
+
+      }
+  }
+
+  });
+
+//this function is checking if two or more filters are already applied
+//this is state saving, for the combination of filters applied.
+  function filteringMap(markers1){
+
+  if(schooltype!=null && ofstedgrade!=null && gendertype!=null){
+    if(markers1.TypeOfEstablishment.includes(schooltype) && markers1.OfstedRating===ofstedgrade && markers1.Gender===gendertype) markers1.setVisible(true);
+    else markers1.setVisible(false);
+  }else if(schooltype!==null && ofstedgrade!==null){
+    if(markers1.TypeOfEstablishment.includes(schooltype) && markers1.OfstedRating===ofstedgrade) markers1.setVisible(true);
+    else markers1.setVisible(false);
+  }else if(schooltype!==null && gendertype!==null){
+    if(markers1.TypeOfEstablishment.includes(schooltype) && markers1.Gender===gendertype) markers1.setVisible(true);
+    else markers1.setVisible(false);
+
+  }else if(ofstedgrade!==null && gendertype!==null){
+    if(markers1.OfstedRating===ofstedgrade && markers1.Gender===gendertype) markers1.setVisible(true);
+    else markers1.setVisible(false);
+  }
+
+  }
+
+//wehn reset is make everything visible and set the values back to null
+  resetfilter.onclick = function(){
+    for (var i = 0; i < markers.length; i++) {
+
+      markers[i].setVisible(true);
+    }
+    schooltype = null;
+    ofstedgrade = null;
+    gendertype =null;
+  }
+
+
+    $("#closebutton").click(function(){
+      $("#overlay").hide();
+    });
+
+  }
+
+
+
+
+//This was used from Djangos official documentation
+// this handles the cookie thats sent whenever AJax requests are made
+  // using jQuery
+  function getCookie(name) {
+      var cookieValue = null;
+      if (document.cookie && document.cookie !== '') {
+          var cookies = document.cookie.split(';');
+          for (var i = 0; i < cookies.length; i++) {
+              var cookie = jQuery.trim(cookies[i]);
+              // Does this cookie string begin with the name we want?
+              if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                  cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                  break;
+              }
+          }
+      }
+      return cookieValue;
+  }
+  var csrftoken = getCookie('csrftoken');
+
+  //This was used from Djangos official documentation
+  // this handles the cookie thats sent whenever AJax requests are made
+  function csrfSafeMethod(method) {
+      // these HTTP methods do not require CSRF protection
+      return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+  }
+  //This was used from Djangos official documentation
+  // this handles the cookie thats sent whenever AJax requests are made
+  $.ajaxSetup({
+      beforeSend: function(xhr, settings) {
+          if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+              xhr.setRequestHeader("X-CSRFToken", csrftoken);
+          }
+      }
+  });
+
+
+//when a click on the button is made call the ajax request
+  $(function(){
+  $(".list-button").click(addRow)
+  });
+
+
+
+  function addRow(){
+    //grabbing the unique value of the button clicked which is the urn of the school
+    school_id = $(this).val();
+    console.log(school_id);
+    $(this).text('Added to List');
+
+    //this sends a post request, that has the school id to the backend where i can store the school
+    $.ajax({
+
+      url: '/add/',
+      type: "POST",
+      data:{
+        school_id : school_id,
+      },
+      success: function(response){
+
+
+      },
+    });
+  }
+
+
+
+
+</script>
+
+</body>
+
+<script src="//maps.googleapis.com/maps/api/js?key=AIzaSyCheDp61H3U49ZPCLhgHJJI6M6iqzhxsCQ&callback=initMap" async defer></script>
+
+
+{% endblock %}

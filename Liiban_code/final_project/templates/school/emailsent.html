@@ -1,0 +1,30 @@
+{% extends "school/base.html"%}
+{% load staticfiles %}
+
+{% block body_block %}
+
+<div class="container message">
+  <h1 class="mainheading">Email Sent</h1>
+
+  <h4 class="maintext">Thank you for contacting us, We'll try to respond within the next working Days</h4>
+
+</div>
+
+<style>
+
+
+.message{
+  text-align: center;
+}
+
+.mainheading{
+  margin-top: 200px;
+}
+.maintext{
+
+  margin-top: 10px;
+}
+
+</style>
+
+{% endblock %}

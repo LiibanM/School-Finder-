@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+{% extends "school/base.html"%}
+
+{% load static %}
+
+{% block body_block %}
+<script type="text/javascript" src="{% static "javascript/leaguetable.js" %}"></script>
+
+
+<table id="table1" class="display">
+
+    <thead>
+        <tr>
+            <th></th>
+            <th>Establishment Name </th>
+            <th>GCSE average 9-4</th>
+            <th>GCSE average 9-5</th>
+            <th>English Baccularate average</th>
+        </tr>
+    </thead>
+    <tbody>
+      {% for data in tabledata %}
+
+        <tr>
+          </script>
+            <td></td>
+            <td>{{data.EstablishmentName}}</td>
+            <td>{{data.Gcse_average_low}}</td>
+            <td>{{data.Gcse_average_high}}</td>
+            <td>{{data.Average_Ebacc}}</td>
+        </tr>
+
+        {% endfor %}
+
+    </tbody>
+
+</table>
+
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
+
+{% endblock %}

@@ -1,0 +1,62 @@
+{% extends "school/base.html"%}
+{% load static %}
+
+{% block body_block %}
+
+<link rel="stylesheet" href="{% static "css/mylist.css" %}"/>
+
+<script type="text/javascript" src="{% static 'javascript/mylist.js' %}"></script>
+
+<main>
+
+  <div class="container-fluid p-0">
+
+      <div class="site-content parallax bg1">
+
+          <div class="d-flex justify-content-center">
+              <div class="d-flex flex-column">
+                <img class="bg1" src="{% static "images/planning.jpg"%}" alt="">
+
+                  <h1 class="site-title "> Your Short list of schools</h1>
+                  <p class="site-desc"> To find new schools check our our interactive map and simply click add </p>
+
+
+              </div>
+          </div>
+      </div>
+  </div>
+
+<p > {{current_user.mapData.EstablishmentName}}</p>
+
+
+  <p>{{current_user.list.mapData}}</p>
+
+
+
+{% for data in schools %}
+
+<div id= "{{data.URN}}" class="abcd contents container" >
+
+<p class="display-4">{{data}}</p>
+
+<p>Admissions policy: {{data.AdmissionsPolicy}}</p>
+<p>Type of school: {{data.TypeOfEstablishment}}</p>
+<p>Ofsted Rating: {{data.OfstedRating}}</p>
+{% if data.SchoolWebsite and 'http://' in data.SchoolWebsite %}
+<a href="{{data.SchoolWebsite}}">Visit my school</a>
+{% else %}
+<a href="http://{{data.SchoolWebsite}}">Visit my school</a>
+{%endif%}
+<p>Call now at: 0{{data.TelephoneNum}}</p>
+<p>{{data.Locality}}</p>
+<button id= "hiddenid"  class="list-button1 btn btn-danger" value="{{data.URN}}"> Delete</button>
+
+<hr>
+</div>
+
+
+
+
+{% endfor %}
+
+{% endblock %}
