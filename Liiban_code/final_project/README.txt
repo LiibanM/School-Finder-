@@ -14,7 +14,7 @@ If you have Anaconda and Python installed on your computer
 
 
 *Admin username: 1
-*Admin Passcode: zakariye098
+*Admin Passcode: X
 
 
 **********************************************************************************************************************
